@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calm Life Booster</title>
+  <link rel="shortcut icon" href="./11.png" type="image/x-icon" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <script>
+    const savedTheme = localStorage.getItem("calm-life-theme");
+
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  </script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <!-- ===== Top Bar ===== -->
+  <header class="topbar">
+    <div class="topbar__logo">
+      <img src="./11.png" height="50px" width="50px" alt="logo-img" />
+      Calm Life Booster
+    </div>
+    <div class="topbar__actions">
+      <button id="themeToggle">
+
+        <span id="themeIcon" class="material-symbols-outlined">
+        </span>
+
+      </button>
+      <div id="openSettingsProfile" class="profile-summary">
+        <button class="avatar" aria-label="Account">
+          <img id="topbarAvatar" src="" alt="Avatar" />
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Side Nav (desktop) ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar__nav" aria-label="Primary">
+      <a class="nav-item is-active" id="dashboard-active" href="index.html">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" href="#" id="openTasks">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>Tasks</span>
+      </a>
+      <a href="#" class="nav-item" id="openPlanner">
+        <span class="material-symbols-outlined"> calendar_today </span>
+
+        <span> Planner </span>
+      </a>
+      <a class="nav-item" href="#" id="openFocus">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Focus Timer</span>
+      </a>
+      <a class="nav-item" id="openGoals" href="#">
+        <span class="material-symbols-outlined">flag</span>
+        <span>Goals</span>
+      </a>
+      <a class="nav-item" href="#" id="openSettings">
+        <span class="material-symbols-outlined"> settings </span>
+
+        <span> Settings </span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main">
+    <section id="dashboardPage">
+      <!-- Date / Time + Weather -->
+      <section class="hero-row">
+        <div>
+          <h1 class="clock" id="currentTime"></h1>
+          <p class="date" id="currentDate"></p>
+        </div>
+
+        <div class="weather-card card" id="weatherCard">
+          <div class="weather-card__temp">
+            <img id="weatherIcon" class="weather-card__icon-img" src="" alt="Weather Icon" />
+
+            <div>
+              <span class="weather-card__deg" id="weatherTemp"> --° </span>
+
+              <span class="weather-card__label" id="weatherCondition">
+                Loading...
+              </span>
+            </div>
+          </div>
+
+          <div class="weather-card__divider"></div>
+
+          <div class="weather-card__details">
+            <span class="weather-card__city" id="weatherCity">
+              Detecting location...
+            </span>
+
+            <span class="weather-card__range" id="weatherDetails">
+              Humidity --% • Wind -- km/h
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quote -->
+      <section class="quote-card card">
+        <button class="icon-btn quote-card__refresh" id="refreshQuote" aria-label="New quote">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+        <span class="material-symbols-outlined quote-card__mark">format_quote</span>
+        <p class="quote-card__text" id="quoteText">
+          "The secret of getting ahead is getting started."
+        </p>
+        <p class="quote-card__author" id="quoteAuthor">— MARK TWAIN</p>
+      </section>
+
+      <!-- Bento Grid -->
+      <section class="bento-grid">
+        <article class="bento-card card" id="openTasksCard">
+          <div class="bento-card__top">
+            <span class="bento-card__icon bento-card__icon--primary">
+              <span class="material-symbols-outlined">checklist</span>
+            </span>
+            <span class="pill" id="taskCardStatus"></span>
+          </div>
+          <h3 class="bento-card__title">Task Manager</h3>
+          <p class="bento-card__desc" id="taskCardDescription">Loading...</p>
+          <div class="segmented-bar" id="taskCardProgress">
+            <span class="segmented-bar__seg"></span>
+
+            <span class="segmented-bar__seg"></span>
+
+            <span class="segmented-bar__seg"></span>
+          </div>
+        </article>
+
+        <article class="bento-card card" id="openPlannerCard">
+          <div class="bento-card__top">
+            <span class="bento-card__icon bento-card__icon--secondary">
+              <span class="material-symbols-outlined">calendar_today</span>
+            </span>
+            <span class="pill pill--neutral" id="plannerCardStatus">
+            </span>
+          </div>
+          <h3 class="bento-card__title">Daily Planner</h3>
+          <p class="bento-card__desc" id="plannerCardDescription">
+            Loading...
+          </p>
+          <p class="bento-card__time" id="plannerCardTime">Loading...</p>
+        </article>
+
+        <article class="bento-card card" id="openFocusCard">
+          <div class="bento-card__top">
+            <span class="bento-card__icon bento-card__icon--tertiary">
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            </span>
+            <span class="pill pill--primary" id="focusCardStatus"></span>
+            <span id="focusCardIcon" class="material-symbols-outlined">play_arrow</span>
+          </div>
+          <h3 class="bento-card__title">Focus Timer</h3>
+          <p class="bento-card__desc" id="focusCardDescription">Loading...</p>
+          <div class="progress-track" id="focusCardProgress">
+            <div class="progress-track__fill progress-track__fill--tertiary" style="width: 0%"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Daily Goals -->
+
+      <article class="bento-card card" id="openGoalsCard">
+        <div class="bento-card__top">
+          <span class="bento-card__icon bento-card__icon--success">
+            <span class="material-symbols-outlined"> rocket_launch </span>
+          </span>
+
+          <span id="goalCardStatus" class="pill pill--primary">
+            0% Complete
+          </span>
+        </div>
+
+        <h3 class="bento-card__title">Daily Goals</h3>
+
+        <p id="goalCardDescription" class="bento-card__desc">
+
+        </p>
+
+        <div class="overall-progress">
+          <div class="overall-progress__row">
+            <span>Today's Progress</span>
+
+            <span id="goalCardCount">0 / 0 Goals</span>
+          </div>
+
+          <div class="progress-track">
+            <div id="goalCardProgress" class="progress-track__fill"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- TASKS PAGE -->
+    <section id="tasksPage" class="tasks-page hidden">
+      <!-- ===== Page Header ===== -->
+      <div class="tasks-header">
+        <button class="back-btn" id="backFromTasks">
+          <span class="material-symbols-outlined">arrow_back</span>
+          <span>Back to Dashboard</span>
+        </button>
+
+        <div class="tasks-heading">
+          <h1>Daily Tasks</h1>
+          <p>Streamline your performance and hit your flow state.</p>
+        </div>
+      </div>
+
+      <!-- ===== Add Task Card ===== -->
+
+      <section class="card add-task-card">
+        <div class="task-input">
+          <input type="text" id="taskInput" placeholder="Add new task..." />
+        </div>
+
+        <div class="task-options">
+          <label class="toggle">
+            <input type="checkbox" id="importantTask" />
+
+            <span class="toggle-slider"></span>
+          </label>
+
+          <span class="toggle-text"> Mark Important </span>
+        </div>
+
+        <button class="btn-primary" id="addTaskBtn">
+          <span class="material-symbols-outlined"> add </span>
+
+          Add Task
+        </button>
+      </section>
+
+      <!-- ===== Active Tasks ===== -->
+
+      <section class="tasks-list-section">
+        <div class="tasks-title">
+          <h2>Active Tasks</h2>
+
+          <span id="taskCount"> (0) </span>
+        </div>
+
+        <div class="tasks-list" id="tasksList">
+          <!-- Tasks generated by JavaScript -->
+        </div>
+
+        <!-- ===== Empty State ===== -->
+
+        <div class="empty-tasks hidden" id="emptyTasks">
+          <span class="material-symbols-outlined"> task_alt </span>
+
+          <h3>No Tasks Yet</h3>
+
+          <p>Add your first task to get started.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- PLANNER PAGE -->
+
+    <section id="plannerPage" class="planner-page hidden">
+      <!-- Header -->
+
+      <header class="planner-header">
+        <button class="back-btn" id="backFromPlanner">
+          <span class="material-symbols-outlined"> arrow_back </span>
+
+          <span> Back to Dashboard </span>
+        </button>
+
+        <div class="planner-title">
+          <h1>Daily Planner</h1>
+
+          <p>Organize your day and stay focused.</p>
+        </div>
+      </header>
+
+      <!-- Planner Layout -->
+
+      <div class="planner-layout">
+        <!-- Sidebar -->
+
+        <aside class="planner-sidebar">
+          <!-- Today's Focus -->
+
+          <section class="planner-focus">
+            <span class="planner-focus__label"> Today's Focus </span>
+
+            <h2 id="plannerDay">Monday</h2>
+
+            <p id="plannerDate">October 14, 2024</p>
+          </section>
+
+          <!-- Quick Notes -->
+
+          <section class="card notes-card">
+            <div class="section-header">
+              <h3>Quick Notes</h3>
+            </div>
+
+            <textarea id="plannerNotes" placeholder="Write notes here...">
+              </textarea>
+          </section>
+        </aside>
+
+        <!-- Timeline -->
+
+        <section class="card timeline-card">
+          <div class="timeline-header">
+            <div>
+              <h2>Timeline</h2>
+
+              <p>Schedule your day hour by hour</p>
+            </div>
+
+            <button class="timeline-view">Day</button>
+          </div>
+
+          <!-- Timeline Container -->
+
+          <div class="timeline" id="timeline">
+            <div class="now-line" id="nowLine">
+              <span class="now-dot"></span>
+
+              <span class="now-label"> NOW </span>
+            </div>
+
+            <!-- Timeline Rows Generated by JavaScript -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Floating Action Button -->
+
+      <button class="planner-fab" id="plannerFab" aria-label="Add Event">
+        <span class="material-symbols-outlined"> add </span>
+      </button>
+
+      <!-- Add / Edit Event Modal -->
+
+      <div class="planner-modal hidden" id="plannerModal">
+        <div class="planner-modal__content card">
+          <div class="planner-modal__header">
+            <h2 id="plannerModalTitle">Add Event</h2>
+
+            <button class="icon-btn" id="closePlannerModal">
+              <span class="material-symbols-outlined"> close </span>
+            </button>
+          </div>
+
+          <div class="planner-form">
+            <div class="form-group">
+              <label> Title </label>
+
+              <input type="text" id="eventTitle" placeholder="Enter title" />
+            </div>
+
+            <div class="form-group">
+              <label> Description </label>
+
+              <textarea id="eventDescription" placeholder="Enter description">
+                </textarea>
+            </div>
+
+            <div class="planner-form__row">
+              <div class="form-group">
+                <label> Time </label>
+
+                <select id="eventHour">
+                  <!-- JS -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label> Status </label>
+
+                <select id="eventStatus">
+                  <option value="scheduled">Scheduled</option>
+
+                  <option value="active">Active</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="planner-form__actions">
+              <button class="btn-secondary" id="cancelPlanner">Cancel</button>
+
+              <button class="btn-primary" id="savePlannerEvent">
+                Save Event
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Empty Timeline State -->
+
+      <template id="timelineTemplate">
+        <article class="timeline-item">
+          <!-- Time -->
+
+          <div class="timeline-time">
+            <span class="timeline-hour"></span>
+          </div>
+
+          <!-- Event -->
+
+          <div class="timeline-event">
+            <div class="event-left">
+              <h3 class="event-title"></h3>
+
+              <p class="event-description"></p>
+
+              <button class="btn-focus">
+                <span class="material-symbols-outlined"> play_arrow </span>
+
+                <span> Start Focus </span>
+              </button>
+            </div>
+
+            <div class="event-right">
+              <div class="event-actions">
+                <button class="icon-btn edit-event" title="Edit">
+                  <span class="material-symbols-outlined"> edit </span>
+                </button>
+
+                <button class="icon-btn delete-event" title="Delete">
+                  <span class="material-symbols-outlined"> delete </span>
+                </button>
+              </div>
+
+              <span class="event-badge"> Scheduled </span>
+            </div>
+          </div>
+        </article>
+      </template>
+
+      <!-- Empty Slot Template -->
+
+      <template id="emptyTimelineTemplate">
+        <article class="timeline-item empty">
+          <div class="timeline-time">
+            <span class="timeline-hour"></span>
+          </div>
+
+          <button class="timeline-empty">
+            <span class="material-symbols-outlined"> add_circle </span>
+
+            <span> Add Task or Note </span>
+          </button>
+        </article>
+      </template>
+
+      <!-- Delete Modal -->
+
+      <div class="planner-modal hidden" id="deletePlannerModal">
+        <div class="planner-modal__content card planner-delete">
+          <span class="material-symbols-outlined delete-icon"> delete </span>
+
+          <h2>Delete Event?</h2>
+
+          <p>This action cannot be undone.</p>
+
+          <div class="planner-form__actions">
+            <button class="btn-secondary" id="cancelDelete">Cancel</button>
+
+            <button class="btn-danger" id="confirmDelete">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Focus Timer Page -->
+
+    <section id="focusPage" class="page hidden">
+      <!-- ========= Top Bar ========= -->
+
+      <header class="page-header">
+        <button class="back-btn" id="backFromFocus">
+          <span class="material-symbols-outlined"> arrow_back </span>
+
+          <span>Back to Dashboard</span>
+        </button>
+      </header>
+
+      <!-- ========= Focus Content ========= -->
+
+      <div class="focus-page">
+        <!-- ===== Timer Mode Tabs ===== -->
+
+        <div class="focus-tabs">
+          <button class="focus-tab active" data-mode="focus">Focus</button>
+
+          <button class="focus-tab" data-mode="short">Short Break</button>
+
+          <button class="focus-tab" data-mode="long">Long Break</button>
+        </div>
+        <!-- Timer Circle -->
+
+        <section class="focus-timer">
+          <div class="timer-circle">
+            <!-- Progress Ring -->
+
+            <svg class="progress-ring" width="360" height="360">
+              <circle class="progress-ring__bg" cx="180" cy="180" r="160"></circle>
+
+              <circle id="progressCircle" class="progress-ring__progress" cx="180" cy="180" r="160"></circle>
+            </svg>
+
+            <!-- Timer Content -->
+
+            <div class="timer-content">
+              <h1 id="timerDisplay">25:00</h1>
+
+              <p id="timerStatus">TIME TO FOCUS</p>
+            </div>
+          </div>
+
+          <!-- Controls -->
+
+          <div class="timer-controls">
+            <button id="resetTimer" class="timer-btn secondary">
+              <span class="material-symbols-outlined"> replay </span>
+            </button>
+
+            <button id="playPauseTimer" class="timer-btn primary">
+              <span id="playPauseIcon" class="material-symbols-outlined">
+                play_arrow
+              </span>
+            </button>
+
+            <button id="skipTimer" class="timer-btn secondary">
+              <span class="material-symbols-outlined"> skip_next </span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Bottom Cards -->
+
+        <section class="focus-bottom">
+          <!-- ========= Durations ========= -->
+
+          <article class="card duration-card">
+            <div class="card-header">
+              <h3>Durations</h3>
+
+              <button class="icon-btn">
+                <span class="material-symbols-outlined"> tune </span>
+              </button>
+            </div>
+
+            <div class="duration-list">
+              <!-- Focus -->
+
+              <div class="duration-item">
+                <span>Focus</span>
+
+                <div class="duration-control">
+                  <button class="duration-btn" data-type="focus" data-action="decrease">
+                    −
+                  </button>
+
+                  <span id="focusDuration"> 25 </span>
+
+                  <button class="duration-btn" data-type="focus" data-action="increase">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- Short Break -->
+
+              <div class="duration-item">
+                <span>Short Break</span>
+
+                <div class="duration-control">
+                  <button class="duration-btn" data-type="short" data-action="decrease">
+                    −
+                  </button>
+
+                  <span id="shortDuration"> 5 </span>
+
+                  <button class="duration-btn" data-type="short" data-action="increase">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- Long Break -->
+
+              <div class="duration-item">
+                <span>Long Break</span>
+
+                <div class="duration-control">
+                  <button class="duration-btn" data-type="long" data-action="decrease">
+                    −
+                  </button>
+
+                  <span id="longDuration"> 15 </span>
+
+                  <button class="duration-btn" data-type="long" data-action="increase">
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ========= Daily Progress ========= -->
+
+          <article class="card progress-card">
+            <div class="card-header">
+              <h3>Daily Progress</h3>
+
+              <span class="material-symbols-outlined"> monitoring </span>
+            </div>
+
+            <div class="progress-grid">
+              <div class="progress-item">
+                <h2 id="sessionCount">0</h2>
+
+                <p>Sessions</p>
+              </div>
+
+              <div class="progress-divider"></div>
+
+              <div class="progress-item">
+                <h2 id="focusHours">0.0</h2>
+
+                <p>Hours</p>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div id="alarmModal" class="modal hidden">
+
+          <div class="modal__card card alarm-card">
+
+            <div class="alarm-icon-wrapper">
+              <span class="material-symbols-outlined alarm-icon">
+                celebration
+              </span>
+            </div>
+
+            <h2 class="alarm-title">
+              Session Complete!
+            </h2>
+
+            <p class="alarm-subtitle" id="alarmMessage">
+              Great job! You completed your Focus Session.
+            </p>
+
+            <div class="alarm-divider"></div>
+
+            <div class="alarm-info">
+
+              <div class="alarm-info-item">
+                <span class="material-symbols-outlined">
+                  timer
+                </span>
+
+                <span id="completedTime">
+                  25 Minutes Completed
+                </span>
+              </div>
+
+              <div class="alarm-info-item">
+                <span class="material-symbols-outlined">
+                  emoji_events
+                </span>
+
+                <span id="nextSessionText">
+                  Next: Short Break
+                </span>
+              </div>
+
+            </div>
+
+            <button id="continueSessionBtn" class="btn-primary alarm-btn">
+
+              Continue to Next Session →
+
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Goals Page -->
+
+    <section id="goalsPage" class="page hidden">
+      <!-- ======= Header ======= -->
+
+      <header class="page-header">
+        <button class="back-btn" id="backFromGoals">
+          <span class="material-symbols-outlined"> arrow_back </span>
+
+          <span> Back to Dashboard </span>
+        </button>
+      </header>
+
+      <!-- ======= Main Layout ======= -->
+
+      <div class="goals-page">
+        <div class="goals-layout">
+          <!-- ======= Left Progress Card ======= -->
+
+          <section class="goal-progress-card">
+            <div class="goal-progress-circle">
+              <svg width="260" height="260" class="goal-progress-svg">
+                <circle class="goal-progress-bg" cx="130" cy="130" r="110"></circle>
+
+                <circle id="goalProgressCircle" class="goal-progress-fill" cx="130" cy="130" r="110"></circle>
+              </svg>
+
+              <div class="goal-progress-content">
+                <h1 id="goalProgressText">0/0</h1>
+
+                <span> COMPLETE </span>
+              </div>
+            </div>
+
+            <p class="goal-progress-message" id="goalMotivation">
+              You're making great progress today! Keep the momentum going.
+            </p>
+          </section>
+
+          <!-- ======== Right Panel ========= -->
+
+          <section class="goals-content">
+            <!-- ======== Add Goal ======== -->
+
+            <div class="card goal-input-card">
+              <div class="goal-input-wrapper">
+                <span class="material-symbols-outlined"> add_task </span>
+
+                <input type="text" id="goalInput" placeholder="What's your next priority?" />
+              </div>
+
+              <button id="addGoalBtn" class="primary-btn">ADD GOAL</button>
+            </div>
+
+            <!-- ======= Goal List ======= -->
+
+            <div class="goal-list" id="goalList">
+              <!-- Goal Item -->
+              <!-- <article class="goal-item completed">
+                  <button class="goal-check checked">
+                    <span class="material-symbols-outlined"> check </span>
+                  </button>
+
+                  <div class="goal-info">
+                    <h4>Clean up email inbox (Zero Inbox Goal)</h4>
+                  </div>
+
+                  <button class="goal-delete">
+                    <span class="material-symbols-outlined"> delete </span>
+                  </button>
+                </article> -->
+            </div>
+
+          </section>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SETTINGS PAGE -->
+    <section id="settingsPage" class="settings-page hidden">
+      <!-- ===== Settings Header ===== -->
+      <div class="settings-header">
+        <button class="back-btn" id="backToDashboard">
+          <span class="material-symbols-outlined">arrow_back</span>
+          <span>Back to Dashboard</span>
+        </button>
+
+        <div class="settings-heading">
+          <h1>Profile Settings</h1>
+          <p>Manage how you appear on Calm Life Booster and update your details.</p>
+        </div>
+      </div>
+
+      <!-- ===== Profile Card ===== -->
+      <section class="card settings-card">
+        <div class="profile-photo">
+          <div class="profile-photo__image">
+            <img id="profilePreview"
+              src="https://three.psbdigital.ca/wp-content/uploads/2024/03/6515859.webp?6bfec1&6bfec1" alt="Profile" />
+          </div>
+
+          <div class="profile-photo__content">
+            <label for="profileInput" class="btn-primary">
+              Upload New Photo
+            </label>
+
+            <input type="file" id="profileInput" accept="image/*" hidden />
+
+            <p>At least 400×400px. JPG or PNG format.</p>
+          </div>
+        </div>
+
+        <!-- ===== Profile Form ===== -->
+        <form class="settings-form">
+          <!-- Display Name -->
+          <div class="form-group">
+            <label for="displayName"> Display Name </label>
+
+            <input type="text" id="displayName" placeholder="Enter your name" value="Anshu" />
+
+            <small> This is how your name appears across the app. </small>
+          </div>
+
+          <!-- Save Button -->
+          <div class="form-actions">
+            <button type="button" id="saveProfile" class="btn-primary">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ===== Data Management ===== -->
+      <section class="card settings-card danger-card">
+        <div class="danger-card__content">
+          <div class="danger-card__title">
+            <span class="material-symbols-outlined"> warning </span>
+
+            <h2>Reset All Data</h2>
+          </div>
+
+          <p>
+            This action permanently deletes all tasks, planner history and
+            daily goals. This cannot be undone.
+          </p>
+        </div>
+
+        <button class="btn-danger" id="resetData">Reset Data</button>
+      </section>
+
+      <!-- Reset Confirmation Modal -->
+      <div class="modal hidden" id="resetModal">
+        <div class="modal__card card">
+          <div class="modal__header">
+            <span class="material-symbols-outlined modal__icon">
+              warning
+            </span>
+
+            <h2>Reset All Data?</h2>
+          </div>
+
+          <p class="modal__text">
+            This action will permanently delete all your tasks, planner
+            history and goal progress. This action cannot be undone.
+          </p>
+
+          <div class="modal__actions">
+            <button type="button" class="btn-secondary" id="cancelReset">
+              Cancel
+            </button>
+
+            <button type="button" class="btn-danger" id="confirmReset">
+              Yes, Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Toast -->
+      <div class="toast" id="saveToast">
+        <span class="material-symbols-outlined"> check_circle </span>
+
+        <span> Changes saved successfully. </span>
+      </div>
+    </section>
+    <!-- ======= End Settings Page ======== -->
+  </main>
+
+  <!-- ===== Bottom Nav (mobile) ===== -->
+  <nav class="bottom-nav" aria-label="Primary mobile">
+    <a class="bottom-nav__item is-active" id="dashboardMobile" href="index.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span>Home</span>
+    </a>
+
+    <a class="bottom-nav__item" id="openTasksMobile" href="#">
+      <span class="material-symbols-outlined">checklist</span>
+      <span>Tasks</span>
+    </a>
+
+    <a class="bottom-nav__item" id="openPlannerMobile" href="#">
+      <span class="material-symbols-outlined">event_note</span>
+      <span>Plan</span>
+    </a>
+
+    <a class="bottom-nav__item" id="openFocusMobile" href="#">
+      <span class="material-symbols-outlined">timer</span>
+      <span>Focus</span>
+    </a>
+
+    <a class="bottom-nav__item" id="openGoalsMobile" href="#">
+      <span class="material-symbols-outlined">rocket_launch</span>
+      <span>Goals</span>
+    </a>
+  </nav>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
