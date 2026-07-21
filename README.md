@@ -154,8 +154,6 @@ Then open **index.html** in your browser.
 🐙 GitHub  
 https://github.com/Shivam-2807
 
-💼 LinkedIn  
-https://www.linkedin.com/in/YOUR-LINKEDIN-USERNAME/
 
 ---
 
